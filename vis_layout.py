@@ -27,7 +27,9 @@ if __name__ == '__main__':
                         help='Skip rendering wall')
     parser.add_argument('--ignore_wireframe', action='store_true',
                         help='Skip rendering wireframe')
-    args = parser.parse_args()
+    args = parser.parse_args(["--img", "./assets/pano_asmasuxybohhcj.png",
+                              "--layout", "./assets/pano_asmasuxybohhcj.layout.txt", "--out", "./asset", "--ignore_floor"])
+
 
     if not args.out and args.no_vis:
         print('You may want to export (via --out) or visualize (without --vis)')
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     lo_mask = (correlate2d(mask, lo_tri_template, mode='same') == 3)
     up_mask = (correlate2d(mask, up_tri_template, mode='same') == 3)
     ma_mask = (correlate2d(mask, ma_tri_template, mode='same') == 3) & (~lo_mask) & (~up_mask)
-    ref_mask = (
+    ref_mask: int = (
         lo_mask | (correlate2d(lo_mask, np.flip(lo_tri_template, (0,1)), mode='same') > 0) |\
         up_mask | (correlate2d(up_mask, np.flip(up_tri_template, (0,1)), mode='same') > 0) |\
         ma_mask | (correlate2d(ma_mask, np.flip(ma_tri_template, (0,1)), mode='same') > 0)
